@@ -1,6 +1,6 @@
 import "./App.css";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TodoTask from "./components/TodoTask";
 
 function App() {
@@ -12,13 +12,20 @@ function App() {
   };
 
   const addTask = () => {
-    setTask([
-      ...tasks,
-      {
-        title: input,
-      },
-    ]);
+    if (input !== "") {
+      setTask([
+        ...tasks,
+        {
+          title: input,
+        },
+      ]);
+      setInput("");
+    }
   };
+
+  useEffect(() => {
+    addTask();
+  }, [tasks]);
 
   return (
     <div className="container">
@@ -34,9 +41,9 @@ function App() {
         <button onClick={addTask}>Add Task</button>
       </div>
       <div className="task-list">
-        {tasks.map((task, key) => {
-          return <TodoTask key={key} title={task.title} number={key + 1} />;
-        })}
+        {tasks.map((task, key) => (
+          <TodoTask key={key} title={task.title} number={key + 1} />
+        ))}
       </div>
     </div>
   );
